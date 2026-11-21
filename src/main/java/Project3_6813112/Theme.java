@@ -11,6 +11,11 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import javax.swing.JFrame;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
@@ -80,6 +85,36 @@ public final class Theme {
         } catch (Exception e) {
             // keep default look and feel
         }
+    }
+
+    /** The task says no window may be bigger than 1200 x 700. */
+    public static final int MAX_W = 1200, MAX_H = 700;
+
+    /**
+     * Lets a frame be resized, but only between its minimum size and 1200 x 700 (the maximize button is turned back).
+     */
+    public static void makeResizable(JFrame f, int minW, int minH) {
+        f.setResizable(true);
+        f.setMinimumSize(new java.awt.Dimension(minW, minH));
+        f.addComponentListener(new ComponentAdapter() {
+            // [PRESENT] EVENT ComponentListener (ComponentAdapter): the window can be resized, never bigger than 1200 x 700
+            @Override
+            public void componentResized(ComponentEvent e) {
+                if ((f.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0) {
+                    f.setExtendedState(JFrame.NORMAL);
+                    return;
+                }
+                int w = Math.min(f.getWidth(), MAX_W), h = Math.min(f.getHeight(), MAX_H);
+                if (w != f.getWidth() || h != f.getHeight()) f.setSize(w, h);
+            }
+        });
+    }
+
+    /** Makes a window smaller if the screen is small (the taskbar is counted), so nothing is cut off. */
+    public static void fitToScreen(Window w) {
+        Rectangle usable = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        int nw = Math.min(w.getWidth(), usable.width - 20), nh = Math.min(w.getHeight(), usable.height - 20);
+        if (nw != w.getWidth() || nh != w.getHeight()) w.setSize(nw, nh);
     }
 
     private static void smooth(Graphics2D g) {

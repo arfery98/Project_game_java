@@ -67,7 +67,8 @@ public class TitleFrame extends JFrame implements ActionListener {
         getRootPane().setDefaultButton(startButton);           // Enter = Start
 
         setSize(1000, 660);
-        setResizable(false);
+        Theme.makeResizable(this, 1000, 660);
+        Theme.fitToScreen(this);
         setLocationRelativeTo(null);
         animation = new Timer(33, e -> scene.repaint());
         animation.start();

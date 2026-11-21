@@ -62,7 +62,7 @@ public class HelpDialog extends JDialog {
                     SELL (Space)       - get its money
                     KEEP AS BAIT (B)   - it goes on your hook as LIVE BAIT
                 A kept fish is LIVE BAIT: it is used up when a fish takes it.
-                Legendary fish cannot be bait. The bait box holds 3 fish.
+                Legendary fish cannot be bait. The bait box holds 5 fish.
                 Pick bait with the Bait box or the B key.
 
             6.  UPGRADE
@@ -141,6 +141,7 @@ public class HelpDialog extends JDialog {
         setContentPane(root);
         Theme.transparent(root);
         setSize(680, 640);
+        Theme.fitToScreen(this);
         setLocationRelativeTo(owner);
     }
 }

@@ -49,9 +49,10 @@ public class SetupFrame extends JFrame implements ActionListener, ItemListener {
 
         JPanel form = new JPanel(new GridLayout(0, 1, 0, 4));
         form.add(row("Your name:", nameField));
+        spotBox.setPreferredSize(new Dimension(200, 26));          // wide enough for "Moonlit Lagoon"
         form.add(row("Fishing spot:", spotBox));
         form.add(row("", spotDesc));
-        form.add(row("", new JLabel("<html><i>No time limit - press End trip when you want to stop.</i></html>")));
+        form.add(row("", new JLabel("<html><div style='width:360px'><i>No time limit - press End trip when you want to stop.</i></div></html>")));
         JPanel formWrap = new JPanel(new BorderLayout());
         formWrap.setBorder(new RibbonBorder("Trip", Theme.WATER));
         formWrap.add(form);
@@ -120,8 +121,8 @@ public class SetupFrame extends JFrame implements ActionListener, ItemListener {
         updateSummary();
 
         setSize(1090, 640);
-        setMinimumSize(new Dimension(1020, 600));
-        setResizable(false);                  // keep the window within 1200x700 (no maximize)
+        Theme.makeResizable(this, 1090, 640);        // resizable, but never bigger than 1200x700
+        Theme.fitToScreen(this);
         setLocationRelativeTo(null);
         new Timer(50, e -> {           // animate the fish in the banner and preview
             preview.repaint();
@@ -145,7 +146,7 @@ public class SetupFrame extends JFrame implements ActionListener, ItemListener {
 
     private void updateSpot() {
         Location loc = (Location) spotBox.getSelectedItem();
-        spotDesc.setText("<html><i>" + loc.getDesc() + "</i></html>");
+        spotDesc.setText("<html><div style='width:360px'><i>" + loc.getDesc() + "</i></div></html>");
         preview.repaint();
     }
 

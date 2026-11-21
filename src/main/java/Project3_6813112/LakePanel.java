@@ -42,6 +42,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     private final LakeGame game;
     private GameLoop loop;
     private Fish hover;
+    private double viewScale = 1, viewOffX, viewOffY;     // the picture is drawn in 810 x 577 and scaled to the panel
     private final int[][] stars = new int[60][2];
     private final double[] weeds = new double[Math.max(44, LakeGame.WORLD_W / 55)];
 
@@ -87,6 +88,13 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         Graphics2D g = (Graphics2D) g0.create();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        viewScale = Math.min((double) getWidth() / W, (double) getHeight() / H);
+        viewOffX = (getWidth() - W * viewScale) / 2.0;
+        viewOffY = (getHeight() - H * viewScale) / 2.0;
+        g.setColor(Theme.WOOD_DARK);                         // bars shown when the window is not exactly 810 x 577
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.translate(viewOffX, viewOffY);
+        g.scale(viewScale, viewScale);
         double t = clock();
 
         synchronized (game) {     // read a consistent picture of the game
@@ -1533,6 +1541,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     // [PRESENT] EVENT MouseListener: click = start power bar / throw / reel / sell or keep the catch
     @Override
     public void mousePressed(MouseEvent e) {
+        Point lp = logical(e);
         mouseDown = true;
         requestFocusInWindow();
         if (game.isOver() || (loop != null && loop.isPaused())) return;
@@ -1542,8 +1551,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
             case REELING -> game.setReelMouse(true);
             case CAUGHT -> {
                 if (game.getCardT() < JUMP_TIME + 0.35) return;                    // the card is still popping up
-                if (cardKeep != null && cardKeep.contains(e.getPoint())) game.keepCatchAsBait();
-                else if (cardRect != null && cardRect.contains(e.getPoint()) && !cardSell.contains(e.getPoint())) return;
+                if (cardKeep != null && cardKeep.contains(lp)) game.keepCatchAsBait();
+                else if (cardRect != null && cardRect.contains(lp) && !cardSell.contains(lp)) return;
                 else game.sellCatch();                                             // Sell button, or a click outside the card
             }
             default -> { }
@@ -1565,8 +1574,9 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     // [PRESENT] EVENT MouseMotionListener: hover over a fish to see its name (fish finder)
     @Override
     public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
+        Point lp = logical(e);
+        mouseX = lp.x;
+        mouseY = lp.y;
         Fish best = null;
         double bd = Double.MAX_VALUE;
         for (Fish f : game.fishSnapshot()) {
@@ -1583,7 +1593,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
                 fy = p.y;
                 size *= Perspective.scale(f.getX()) * 1.5;
             }
-            double d = Math.hypot(fx - e.getX(), fy - e.getY());
+            double d = Math.hypot(fx - lp.x, fy - lp.y);
             if (d < size * 0.5 + 8 && d < bd) {
                 bd = d;
                 best = f;
@@ -1591,6 +1601,11 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         }
         hover = best;
         setCursor(Cursor.getPredefinedCursor(game.getPhase() == LakeGame.Phase.IDLE ? Cursor.CROSSHAIR_CURSOR : Cursor.HAND_CURSOR));
+    }
+
+    /** Converts a mouse position to the fixed 810 x 577 picture that the game is drawn in. */
+    private Point logical(MouseEvent e) {
+        return new Point((int) Math.round((e.getX() - viewOffX) / viewScale), (int) Math.round((e.getY() - viewOffY) / viewScale));
     }
 
     @Override public void mouseClicked(MouseEvent e) { }

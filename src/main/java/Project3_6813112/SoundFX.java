@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
@@ -69,8 +70,12 @@ public final class SoundFX {
                 }
                 line.drain();
             }
-        } catch (Exception ignored) {
-            // no audio device - play silently
+        } catch (LineUnavailableException | IllegalArgumentException e) {
+            // no audio device (or no 8-bit line): the game is still fully playable, so switch the sound off
+            if (enabled) System.err.println("Sound is not available on this computer: " + e.getMessage());
+            enabled = false;
+        } catch (RuntimeException e) {
+            enabled = false;          // any other audio problem: play silently
         }
     }
 

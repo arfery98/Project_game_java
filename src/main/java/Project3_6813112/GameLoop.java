@@ -14,6 +14,7 @@ public class GameLoop extends Thread {
     private final Runnable repaint;
     private volatile boolean running = true;
     private volatile boolean paused;
+    private int failures;                         // frames in a row that threw an exception
 
     public GameLoop(LakeGame game, Runnable repaint) {
         super("game-loop");
@@ -29,8 +30,15 @@ public class GameLoop extends Thread {
             long now = System.nanoTime();
             double dt = Math.min(0.1, (now - last) / 1e9);
             last = now;
-            if (!paused) game.update(dt);
-            repaint.run();
+            try {
+                if (!paused) game.update(dt);
+                repaint.run();
+                failures = 0;
+            } catch (RuntimeException e) {
+                // one bad frame must not kill the thread (the fish would freeze): report it and go on
+                if (failures++ == 0) e.printStackTrace();
+                if (failures > 200) break;           // the same error again and again: stop instead of spinning
+            }
             try {
                 Thread.sleep(16);
             } catch (InterruptedException e) {

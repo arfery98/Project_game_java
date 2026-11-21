@@ -92,6 +92,7 @@ public class FishdexDialog extends JDialog implements ActionListener {
         Theme.transparent(root);
         reload();
         setSize(1010, 440);
+        Theme.fitToScreen(this);
         setLocationRelativeTo(owner);
     }
 

@@ -101,6 +101,7 @@ public class ShopDialog extends JDialog implements ActionListener {
         tip.setForeground(Theme.PAPER_DARK);
         refresh();
         setSize(CARD_W * 3 + 2 * 12 + 140, 680);
+        Theme.fitToScreen(this);
         setLocationRelativeTo(owner);
 
         animation = new Timer(60, e -> tabs.repaint());          // the pictures move a little (spinning crank, sparkles)

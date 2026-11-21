@@ -124,6 +124,7 @@ public class ResultDialog extends JDialog {
         Theme.transparent(root);
         title.setForeground(Theme.PAPER);
         setSize(760, 470);
+        Theme.fitToScreen(this);
         setLocationRelativeTo(owner);
     }
 }

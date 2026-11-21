@@ -96,8 +96,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
             }
         });
         setSize(1170, 630);
-        setMinimumSize(new Dimension(1140, 620));
-        setResizable(false);                  // keep the window within 1200x700 (no maximize)
+        Theme.makeResizable(this, 1010, 610);        // resizable (the lake picture scales), never bigger than 1200x700
+        Theme.fitToScreen(this);
         setLocationRelativeTo(null);
 
         loop = new GameLoop(game, lake::repaint);
