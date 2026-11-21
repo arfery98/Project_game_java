@@ -116,6 +116,7 @@ public class HelpGuide extends JPanel {
         return Species.values()[0];
     }
 
+    // [GRAPHICS] the 9 small animated pictures in How to Play; a Swing Timer (40 ms) changes t and repaints
     private static final class Diagram extends JComponent {
         private final int kind;
 

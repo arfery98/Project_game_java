@@ -31,6 +31,7 @@ public final class Shading {
         }
     };
 
+    // [GRAPHICS] rounds the tail phase to 8 poses so the cache can reuse pictures
     /** The same pose of the same fish: the animation phase rounded to 8 steps of one wag. */
     public static double steps(double anim) {
         double turn = 2 * Math.PI;
@@ -38,6 +39,7 @@ public final class Shading {
         return Math.round(a / turn * 8) * turn / 8;
     }
 
+    // [GRAPHICS] LIGHT + OUTLINE: paints flat shapes into a small image, adds a top-light gradient and a dark outline, caches the result
     /**
      * @param key a text that is the same for the same picture (null = do not keep it)
      * @param x0,y0 the top-left corner of the box (in the coordinates of g) that contains the whole drawing

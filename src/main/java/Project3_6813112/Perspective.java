@@ -5,6 +5,7 @@ package Project3_6813112;
 
 import java.awt.geom.Point2D;
 
+// [GRAPHICS] turns a position in the flat world into a screen position with depth (2.5-D) before casting
 /**
  * Maps the game's 2-D world (x = distance from the dock, y = depth) into the
  * 3-D "behind the angler" camera view.

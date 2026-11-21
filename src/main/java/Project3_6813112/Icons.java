@@ -21,6 +21,7 @@ public final class Icons {
 
     /** Draws an icon into a size x size box. */
     public interface Painter {
+        // [GRAPHICS] every icon is a small painter: shapes drawn at size s, no image files
         void paint(Graphics2D g, int s);
     }
 

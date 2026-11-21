@@ -122,6 +122,7 @@ public final class Theme {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
+    // [GRAPHICS] wood texture: gradient + grain lines, used by the panels and buttons
     /** Wooden board: gradient planks with grain lines and a dark rim. */
     public static void paintWood(Graphics2D g0, int x, int y, int w, int h, int arc) {
         Graphics2D g = (Graphics2D) g0.create();
@@ -152,6 +153,7 @@ public final class Theme {
         g.dispose();
     }
 
+    // [GRAPHICS] cream paper card with a soft border
     /** Old paper card with a soft edge. */
     public static void paintPaper(Graphics2D g0, int x, int y, int w, int h, int arc) {
         Graphics2D g = (Graphics2D) g0.create();

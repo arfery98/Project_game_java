@@ -82,6 +82,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     // =====================================================================
     // painting
     // =====================================================================
+    // [GRAPHICS] MAIN DRAW: paints the whole lake into a fixed 810x577 picture, scaled to the window (viewScale); calls the draw* methods below, back to front
     @Override
     protected void paintComponent(Graphics g0) {
         super.paintComponent(g0);
@@ -391,6 +392,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     private double sunX() { return par(W * 0.12 + W * 0.55 * sunProgress(), P_SKY); }
     private double moonX() { return par(W * 0.45 + 19, P_SKY); }
 
+    // [GRAPHICS] sky, sun/moon, clouds, hills (changes with the in-game clock)
     private void drawSky(Graphics2D g, double day, boolean rain, double t) {
         updateCamera(t);
         Color top = mix(new Color(12, 16, 48), new Color(100, 170, 235), day);
@@ -534,6 +536,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         return (Math.sin(x * 0.045 + t * 1.8) * 2.2 + Math.sin(x * 0.11 - t * 2.6) * 1.1) * amp;
     }
 
+    // [GRAPHICS] water in the side view: gradient by depth + wave lines + light rays
     private void drawWater(Graphics2D g, double day, double t) {
         Location loc = game.getSettings().location();
         Color top = mix(loc.getWaterTop().darker().darker(), loc.getWaterTop(), 0.35 + 0.65 * day);
@@ -657,6 +660,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.fill(new Ellipse2D.Double(f.getX() - r, f.getY() - r, r * 2, r * 2));
     }
 
+    // [GRAPHICS] side view: draws every fish with FishArt.draw (tail wag from Fish animation phase)
     private void drawFish(Graphics2D g) {
         boolean finder = game.getSettings().fishFinder();
         for (Fish f : game.fishSnapshot()) {
@@ -710,6 +714,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.dispose();
     }
 
+    // [GRAPHICS] water in the 2.5-D view before casting (uses Perspective)
     private void drawWater3D(Graphics2D g, double day, double t) {
         Location loc = game.getSettings().location();
         Color near = mix(Color.BLACK, mix(loc.getWaterTop(), loc.getWaterBottom(), 0.45), 0.45 + 0.55 * day);
@@ -776,6 +781,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         b.dispose();
     }
 
+    // [GRAPHICS] 2.5-D view: fish shown as dark shadow blobs under the water
     private void drawFish3D(Graphics2D g) {
         projected.clear();
         java.util.List<Fish> list = game.fishSnapshot();
@@ -798,6 +804,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+    // [GRAPHICS] the wooden dock and the angler in the 2.5-D view
     /** Foreground: a wooden dock running toward the vanishing point, the angler seen from behind. */
     private void drawDock3D(Graphics2D g, double t) {
         double vx = Perspective.CENTER_X, vy = Perspective.HORIZON;
@@ -921,6 +928,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.setStroke(new BasicStroke(1f));
     }
 
+    // [GRAPHICS] the hook and the lure at the end of the line
     /** The lure at the end of the line: a coloured jig. The colour is the lure class; you never see a fish here. */
     private void drawHookSprite(Graphics2D g, double hx, double hy, double k) {
         Angler a = game.getAngler();
@@ -1128,6 +1136,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.setStroke(new BasicStroke(1f));
     }
 
+    // [GRAPHICS] the fishing line from the rod tip to the hook (a Path2D curve)
     private void drawLine(Graphics2D g) {
         LakeGame.Phase ph = game.getPhase();
         if (ph == LakeGame.Phase.IDLE || ph == LakeGame.Phase.CHARGING
@@ -1157,6 +1166,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         if (ph != LakeGame.Phase.REELING) drawHookSprite(g, hx, hy, 1);
     }
 
+    // [GRAPHICS] rain: many short lines, positions from the time t
     private void drawRain(Graphics2D g, double t) {
         g.setColor(new Color(200, 210, 230, 140));
         Random r = new Random(3);
@@ -1168,6 +1178,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     // ---------------- HUD: hanging wooden sign + depth stick ----------------
+    // [GRAPHICS] the wooden sign: money, clock, bait
     private void drawHud(Graphics2D g, double t) {
         Angler a = game.getAngler();
         int played = (int) game.getElapsed();
@@ -1261,6 +1272,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+    // [GRAPHICS] the power bar (green to red) and the moving marker
     /**
      * Cast power bar: a vertical green -> red bar with a marker that sweeps up and down.
      * Click 2 (or Space) stops it; the power at that moment decides how far the line goes.
@@ -1307,6 +1319,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     // ---------------- reel gauge (tension dial) ----------------
+    // [GRAPHICS] the tension gauge: arc with green/yellow/red zones and the needle
     private void drawReeling(Graphics2D g, double t) {
         double ten = game.getTension(), limit = game.getTensionLimit();
         double max = 1.25;                       // dial shows 0 .. 1.25
@@ -1376,6 +1389,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     // ---------------- catch: fish leaps out, then the card pops ----------------
+    // [GRAPHICS] the catch card: fish picture, size, price, Sell / Keep buttons
     private void drawCatch(Graphics2D g, double t) {
         CatchRecord c = game.getLastCatch();
         if (c == null) return;
@@ -1603,6 +1617,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         setCursor(Cursor.getPredefinedCursor(game.getPhase() == LakeGame.Phase.IDLE ? Cursor.CROSSHAIR_CURSOR : Cursor.HAND_CURSOR));
     }
 
+    // [GRAPHICS] turns a mouse position in the window into a position in the fixed picture (inverse of viewScale)
     /** Converts a mouse position to the fixed 810 x 577 picture that the game is drawn in. */
     private Point logical(MouseEvent e) {
         return new Point((int) Math.round((e.getX() - viewOffX) / viewScale), (int) Math.round((e.getY() - viewOffY) / viewScale));
