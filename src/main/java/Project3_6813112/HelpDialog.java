@@ -203,6 +203,7 @@ public class HelpDialog extends JDialog {
             """;
 
     private static boolean thai;           // the language is remembered while the program runs
+    private HelpGuide guide;               // the animated pictures (stopped when the window closes)
 
     public HelpDialog(Window owner) {
         super(owner, thai ? "วิธีเล่น" : "How to Play", ModalityType.APPLICATION_MODAL);
@@ -219,9 +220,18 @@ public class HelpDialog extends JDialog {
         JScrollPane scroll = Theme.scroll(area);
         scroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        guide = new HelpGuide(thai);
+        JScrollPane pictures = Theme.scroll(guide);
+        pictures.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        pictures.getVerticalScrollBar().setUnitIncrement(18);
+        final javax.swing.JTabbedPane tabs = new javax.swing.JTabbedPane();
+        tabs.addTab(thai ? "ภาพประกอบ" : "Pictures", pictures);
+        tabs.addTab(thai ? "คำอธิบายเต็ม" : "Full guide", scroll);
+        tabs.setFont(thai ? thaiFont(Font.BOLD, 13) : Theme.body(Font.BOLD, 13));
+
         JPanel card = new JPanel(new BorderLayout());
         card.setBorder(new RibbonBorder("How to Play", Theme.WATER));
-        card.add(scroll);
+        card.add(tabs);
 
         FancyButton close = new FancyButton(thai ? "ไปตกปลากัน!" : "Let's fish!", Icons.rod(18), FancyButton.Style.GREEN);
         close.addActionListener(e -> dispose());
@@ -235,6 +245,10 @@ public class HelpDialog extends JDialog {
             area.setText(fullText());
             area.setFont(textFont());
             area.setCaretPosition(0);
+            guide.setThai(thai);
+            tabs.setFont(thai ? thaiFont(Font.BOLD, 13) : Theme.body(Font.BOLD, 13));
+            tabs.setTitleAt(0, thai ? "ภาพประกอบ" : "Pictures");
+            tabs.setTitleAt(1, thai ? "คำอธิบายเต็ม" : "Full guide");
             language.setText(thai ? "English" : "ภาษาไทย");
             close.setText(thai ? "ไปตกปลากัน!" : "Let's fish!");
             applyButtonFont(close, latinFont);
@@ -255,7 +269,7 @@ public class HelpDialog extends JDialog {
         root.add(south, BorderLayout.SOUTH);
         setContentPane(root);
         Theme.transparent(root);
-        setSize(680, 640);
+        setSize(720, 660);
         Theme.fitToScreen(this);
         setLocationRelativeTo(owner);
     }
@@ -277,11 +291,17 @@ public class HelpDialog extends JDialog {
     }
 
     /** The first installed font that can draw Thai letters (the game's own font, Segoe UI, cannot). */
-    private static Font thaiFont(int style, int size) {
+    static Font thaiFont(int style, int size) {
         for (String name : new String[]{"Leelawadee UI", "Tahoma", "Noto Sans Thai", "Thonburi", "Sarabun", "Dialog"}) {
             Font f = new Font(name, style, size);
             if (f.canDisplay('ก')) return f;          // the letter "ก"
         }
         return new Font(Font.DIALOG, style, size);
+    }
+
+    @Override
+    public void dispose() {
+        if (guide != null) guide.stop();
+        super.dispose();
     }
 }
