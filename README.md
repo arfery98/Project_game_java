@@ -13,7 +13,7 @@ All graphics and sounds are drawn and synthesized in code, there are no image or
 Java 17 or newer.
 
 ```bash
-javac -d out src/main/java/Project3_6813112/*.java
+javac -encoding UTF-8 -d out src/main/java/Project3_6813112/*.java
 java -cp out Project3_6813112.MainApplication
 ```
 

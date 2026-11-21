@@ -211,7 +211,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
         String m;
         while ((m = game.pollLog()) != null) log(m);
         Angler a = game.getAngler();
-        moneyLabel.setText(" $" + a.getMoney());
+        moneyLabel.setText(" " + a.moneyText());
         countLabel.setText(a.getCatches().size() + " fish  /  " + a.speciesCount() + " species");
         gearLabel.setText(a.getRod().getTitle() + " [" + a.slotsUsed() + "/" + a.slots() + "]  +  " + a.getReel().getTitle());
         catchModel.setRows(a.getCatches(), a.getVersion());

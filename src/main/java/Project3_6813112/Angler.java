@@ -41,7 +41,15 @@ public class Angler {
     }
 
     public String getName() { return name; }
-    public int getMoney() { return money; }
+    /** Admin mode (the player is called "admin"): the money never runs out. */
+    private boolean unlimited;
+
+    public void setUnlimited(boolean on) { unlimited = on; }
+    public boolean isUnlimited() { return unlimited; }
+    public int getMoney() { return unlimited ? 999_999_999 : money; }
+
+    /** Money for the screen: "$60", or "$∞" in admin mode. */
+    public String moneyText() { return unlimited ? "$\u221E" : "$" + money; }
     public int getEarned() { return earned; }
     public Rod getRod() { return rod; }
     public Reel getReel() { return reel; }
@@ -135,8 +143,8 @@ public class Angler {
             return "No free slot on the " + rod.getTitle() + " (" + parts.size() + "/" + rod.getSlots()
                     + "). Remove a part or buy a better rod.";
         }
-        if (money < item.getPrice()) return "Not enough money for " + item.getTitle() + " ($" + item.getPrice() + ").";
-        money -= item.getPrice();
+        if (getMoney() < item.getPrice()) return "Not enough money for " + item.getTitle() + " ($" + item.getPrice() + ").";
+        if (!unlimited) money -= item.getPrice();
         if (item instanceof Bait b) {
             baits.add(b);
             bait = b;
@@ -182,7 +190,7 @@ public class Angler {
     /** Sells a fish for its value. */
     public void sell(CatchRecord r) {
         int v = sellValue(r);
-        money += v;
+        if (!unlimited) money += v;
         earned += v;
         fate.put(r, "sold");
         version++;

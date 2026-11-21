@@ -100,6 +100,7 @@ public class LakeGame {
         this.settings = settings;
         this.bottomY = SURFACE + settings.location().getDepth();
         this.angler = new Angler(settings.name());
+        if (settings.name().trim().equalsIgnoreCase("admin")) angler.setUnlimited(true);      // admin: unlimited money
         this.clock = settings.dayNight() ? 15 * 60 : (settings.location().isAlwaysNight() ? 22 * 60 : 10 * 60);
         populate(40);
     }
@@ -123,6 +124,7 @@ public class LakeGame {
                 double ct = Math.max(0, chargeT - ZOOM_TIME);
                 double p = (ct / SWEEP_TIME) % 2;
                 aimPower = ct <= 0 ? 0 : (p < 1 ? p : 2 - p);
+                SoundFX.setPower(ct <= 0 ? -1 : aimPower);        // the note rises and falls with the marker (green -> red -> green ...)
             }
             case CASTING -> updateCast(dt);
             case WAITING -> updateWaiting(dt);
@@ -367,11 +369,7 @@ public class LakeGame {
 
         if (reeling) {
             lineD -= angler.getReel().getSpeed() * Math.max(0.15, 1 - pull * 0.7) * dt;
-            reelSoundT -= dt;
-            if (reelSoundT <= 0) {
-                SoundFX.reel();
-                reelSoundT = 0.14;
-            }
+            SoundFX.setReeling(true);                  // the reel sound plays only while the button is held
         } else {
             lineD += pull * 40 * Math.max(1, Math.sqrt(lineD0 / 100)) * dt;      // the fish takes line while you do not reel
         }
@@ -654,6 +652,7 @@ public class LakeGame {
     /** Click 2 (or Space again): stop the bar and throw. Power = where the marker stopped. */
     public synchronized void release() {
         if (phase != Phase.CHARGING || chargeT < ZOOM_TIME) return;
+        SoundFX.setPower(-1);                          // the bar stops, so its sound stops
         aimPower = Math.max(0.08, aimPower);          // even a very weak throw lands a little way out
         castTargetX = MIN_CAST_X + aimPower * (maxCastX() - MIN_CAST_X);
         castDur = 0.75 + (castTargetX - ROD_X) / 2500.0;      // a long cast flies a little longer
@@ -763,12 +762,12 @@ public class LakeGame {
     private void chomp(Fish prey) {
         prey.eaten++;
         chomps++;
+        SoundFX.eat();
         tension = Math.min(tensionLimit() * 0.95, tension + 0.25);
         boolean bones = prey.eaten >= 3;
         toasts.add(new Toast(bones ? "Only bones are left!" : "CHOMP!", prey.x, prey.y + 40, new Color(255, 90, 70)));
         log.add(bones ? "A " + hunter.getSpecies().getTitle() + " ate the whole fish - only bones are left!"
                 : "A " + hunter.getSpecies().getTitle() + " bit your catch! (" + prey.eaten + "/3)");
-        SoundFX.snap();
         hunter.startled(prey.x);
         hunter = null;
         huntLeft = bones ? 0 : huntLeft - 1;

@@ -145,7 +145,7 @@ public class ShopDialog extends JDialog implements ActionListener {
     private void refresh() {
         if (cards.size() < tabs.getTabCount() || tabs.getSelectedIndex() < 0) return;      // still being built
         Angler a = game.getAngler();
-        moneyLabel.setText(" $" + a.getMoney());
+        moneyLabel.setText(" " + a.moneyText());
         slotLabel.setText("<html>" + a.getRod().getTitle() + ": part slots " + a.slotsUsed() + "/" + a.slots()
                 + (a.slotsUsed() > 0 ? " &nbsp;(" + partNames(a) + ")" : "") + "</html>");
         removeButton.setVisible(onParts());

@@ -31,6 +31,7 @@ public class ResultDialog extends JDialog {
 
     public static void record(LakeGame g) {
         Angler a = g.getAngler();
+        if (a.isUnlimited()) return;                   // admin trips (unlimited money) are not ranked
         CatchRecord best = a.biggestCatch();
         BOARD.add(new Entry(a.getName(), g.getSettings().location().getTitle(), a.getEarned(), (int) g.getElapsed(),
                 a.getCatches().size(), best == null ? "-" : best.species().getTitle()));

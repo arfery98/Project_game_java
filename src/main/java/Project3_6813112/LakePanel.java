@@ -1185,7 +1185,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         s.fillOval(sx + sw - 33, sy + 4, 6, 6);
         s.setFont(Theme.title(20));
         s.setColor(new Color(255, 225, 120));
-        s.drawString("$" + a.getMoney(), sx + 14, sy + 38);
+        s.drawString(a.moneyText(), sx + 14, sy + 38);
         s.setColor(Theme.PAPER);
         String time = String.format("%d:%02d", played / 60, played % 60);
         FontMetrics fm = s.getFontMetrics();
