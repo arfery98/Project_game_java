@@ -42,24 +42,31 @@ public final class FishArt {
         }
         double cut = eaten <= 0 ? -1e9 : eaten == 1 ? -len * 0.20 : eaten == 2 ? len * 0.12 : 1e9;   // x < cut is eaten
         if (eaten < 3) {
-            Graphics2D b = (Graphics2D) g.create();
-            if (eaten > 0) b.clip(new java.awt.geom.Rectangle2D.Double(cut, -len, len * 1.4 - cut, len * 2));
-            switch (s.getShape()) {
-                case FISH -> body(b, s, len, 0.42, anim);
-                case LONG -> body(b, s, len, 0.24, anim);
-                case EEL -> eel(b, s, len, anim);
-                case RAY -> ray(b, s, len, anim);
-                case SQUID -> squid(b, s, len, anim);
-                case ROUND -> round(b, s, len, anim);
-                case TORPEDO -> torpedo(b, s, len, anim);
-                case FANTAIL -> fantail(b, s, len, anim);
-                case CATFISH -> catfish(b, s, len, anim);
-                case NEEDLE -> needle(b, s, len, anim);
-                case PUFFER -> puffer(b, s, len, anim);
-                case ANGLER -> angler(b, s, len, anim);
-                case BULKY -> bulky(b, s, len, anim);
-            }
-            b.dispose();
+            final double cutX = cut;
+            final double an = Shading.steps(anim);          // 8 poses of the tail: each is lit once and then reused
+            // the body is painted flat, then Shading adds soft light from above and a thin dark outline
+            String key = s.name() + ":" + Math.round(len * 2) + ":" + eaten + ":" + Math.round(an * 100);
+            Shading.paint(key, g, -len * 1.05 - 12, -len * 0.55 - 12, len * 2.1 + 24, len * 1.1 + 24, -len * 0.38, len * 0.38,
+                    Math.max(1.0, len / 60), ig -> {
+                Graphics2D b = (Graphics2D) ig.create();
+                if (eaten > 0) b.clip(new java.awt.geom.Rectangle2D.Double(cutX, -len, len * 1.4 - cutX, len * 2));
+                switch (s.getShape()) {
+                    case FISH -> body(b, s, len, 0.42, an);
+                    case LONG -> body(b, s, len, 0.24, an);
+                    case EEL -> eel(b, s, len, an);
+                    case RAY -> ray(b, s, len, an);
+                    case SQUID -> squid(b, s, len, an);
+                    case ROUND -> round(b, s, len, an);
+                    case TORPEDO -> torpedo(b, s, len, an);
+                    case FANTAIL -> fantail(b, s, len, an);
+                    case CATFISH -> catfish(b, s, len, an);
+                    case NEEDLE -> needle(b, s, len, an);
+                    case PUFFER -> puffer(b, s, len, an);
+                    case ANGLER -> angler(b, s, len, an);
+                    case BULKY -> bulky(b, s, len, an);
+                }
+                b.dispose();
+            });
         }
         if (eaten > 0) bones(g, s, len, cut, anim, eaten >= 3);
         if (s.isLegendary() && eaten == 0) sparkles(g, len, anim);
@@ -588,6 +595,8 @@ public final class FishArt {
         g.fill(new Ellipse2D.Double(x - r, y - r, r * 2, r * 2));
         g.setColor(Color.BLACK);
         g.fill(new Ellipse2D.Double(x - r * 0.3, y - r * 0.55, r * 1.1, r * 1.1));
+        g.setColor(new Color(255, 255, 255, 235));                                   // a little shine: the eye looks alive
+        g.fill(new Ellipse2D.Double(x + r * 0.0, y - r * 0.45, r * 0.42, r * 0.42));
     }
 
     private static void sparkles(Graphics2D g, double len, double anim) {

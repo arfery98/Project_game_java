@@ -24,10 +24,15 @@ public final class ItemArt {
     public static void draw(Graphics2D g0, ShopItem item, int w, int h, double t) {
         Graphics2D g = (Graphics2D) g0.create();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        if (item instanceof Rod r) rod(g, r, w, h, t);
-        else if (item instanceof Reel r) reel(g, r, w, h, t);
-        else if (item instanceof Bait b) lure(g, b, w, h, t);
-        else if (item instanceof Part p) part(g, p, w, h, t);
+        // painted flat, then Shading adds soft light from above and a thin dark outline
+        final double tq = Math.floor(t * 8) / 8.0;                    // the little animations move in 8 steps per second
+        String key = item.getTitle() + ":" + w + "x" + h + ":" + Math.round(tq * 8);
+        Shading.paint(key, g, -6, -6, w + 12, h + 12, 0, h, 1.0, ig -> {
+            if (item instanceof Rod r) rod(ig, r, w, h, tq);
+            else if (item instanceof Reel r) reel(ig, r, w, h, tq);
+            else if (item instanceof Bait b) lure(ig, b, w, h, tq);
+            else if (item instanceof Part p) part(ig, p, w, h, tq);
+        });
         g.dispose();
     }
 
