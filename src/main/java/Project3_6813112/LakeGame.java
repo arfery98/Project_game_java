@@ -640,6 +640,8 @@ public class LakeGame {
     public synchronized void startCharge() {
         if (phase == Phase.IDLE && !over) {
             phase = Phase.CHARGING;
+            hookX = ROD_X;                             // forget the last cast: the hook starts at the rod tip
+            hookY = ROD_Y;
             chargeT = 0;
             aimPower = 0;
             SoundFX.nibble();
@@ -910,7 +912,11 @@ public class LakeGame {
     public synchronized double getHookX() { return hookX; }
     public synchronized double getHookY() { return hookY; }
     public synchronized int getHookDepth() { return (int) Math.round(getHookDepthF()); }
-    public synchronized double getHookDepthF() { return Math.max(0, hookY - SURFACE); }
+    /** Depth of the hook below the surface; 0 whenever no line is in the water (idle, charging, casting). */
+    public synchronized double getHookDepthF() {
+        boolean inWater = phase == Phase.WAITING || phase == Phase.BITE || phase == Phase.REELING;
+        return inWater ? Math.max(0, hookY - SURFACE) : 0;
+    }
     public synchronized double getTension() { return tension; }
     public synchronized double getTensionLimit() { return tensionLimit(); }
     public synchronized boolean isBurst() { return burst; }
