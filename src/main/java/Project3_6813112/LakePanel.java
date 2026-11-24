@@ -1516,7 +1516,6 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.drawString(text, r.x + (r.width - fm.stringWidth(text)) / 2, r.y + r.height / 2 + fm.getAscent() / 2 - 3);
     }
 
-    /** A live bait fish hanging from the hook (its head on the hook, tail down), swaying a little. */
     /** Rotating rays and twinkling stars behind a special catch card. */
     private void drawGlitter(Graphics2D g, double cx, double cy, double t, boolean gold) {
         Color ray = gold ? new Color(255, 220, 90, 70) : new Color(255, 255, 255, 60);

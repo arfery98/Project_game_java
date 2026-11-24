@@ -37,3 +37,5 @@ Rules to remember:
 
 Main screens: Title -> Setup (name, spot) -> Game -> Result (leaderboard).
 Dialogs: Options, Help, Shop, Fishdex (collection book), Result.
+
+Demo clip (under 5 minutes, mp4): demo-clip.mp4 (in this folder).

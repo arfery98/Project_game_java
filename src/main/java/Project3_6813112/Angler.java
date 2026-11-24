@@ -112,7 +112,6 @@ public class Angler {
         version++;
     }
 
-    /** Name for the HUD and lists: "Worm" or "Live: Yellow Perch 29 cm". */
     /** Short bait name for the small sign on the screen. */
     public String baitShort() {
         return live != null ? "Live " + live.species().getTitle() : bait.getTitle();

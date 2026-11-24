@@ -98,12 +98,12 @@ public class Fish {
     public double getDisplayVx() { return dvx; }
     public double getLaneVel() { return laneVel; }
 
-    /** Value grows with size: 60% of base at minimum size, 140% at maximum. */
     /** Share of the price that is left after 0, 1, 2, 3 bites by bigger fish (3 = only bones). */
     public static final double[] VALUE_LEFT = {1.0, 0.7, 0.4, 0.1};
     int eaten;                       // bites taken out of this fish while it was being reeled in
     public int getEaten() { return eaten; }
 
+    /** Value grows with size: 60% of base at minimum size, 140% at maximum. */
     // [PRESENT] RULE PRICE: size x species price, reduced by how many times a hunter bit it
     // ไทย: กฎราคา: ราคาพื้นฐานของชนิดปลา คูณตามขนาดตัว คูณสัดส่วนที่เหลือหลังโดนนักล่ากัด
     public int value() {
