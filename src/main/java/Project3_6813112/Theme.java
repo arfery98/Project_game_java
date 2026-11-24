@@ -93,11 +93,14 @@ public final class Theme {
     /**
      * Lets a frame be resized, but only between its minimum size and 1200 x 700 (the maximize button is turned back).
      */
+    // [PRESENT] RULE WINDOW SIZE: the user can resize, but never above 1200x700 (requirement); LakePanel scales the 810x577 picture to fit
+    // ไทย: กฎขนาดหน้าต่าง: ผู้ใช้ย่อขยายได้ แต่ไม่เกิน 1200x700 (ตามโจทย์) LakePanel ปรับภาพ 810x577 ให้พอดี
     public static void makeResizable(JFrame f, int minW, int minH) {
         f.setResizable(true);
         f.setMinimumSize(new java.awt.Dimension(minW, minH));
         f.addComponentListener(new ComponentAdapter() {
             // [PRESENT] EVENT ComponentListener (ComponentAdapter): the window can be resized, never bigger than 1200 x 700
+            // ไทย: event ComponentListener (ComponentAdapter): ย่อขยายหน้าต่างได้ แต่ไม่เกิน 1200 x 700
             @Override
             public void componentResized(ComponentEvent e) {
                 if ((f.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0) {
@@ -122,7 +125,8 @@ public final class Theme {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
 
-    // [GRAPHICS] wood texture: gradient + grain lines, used by the panels and buttons
+    // [GRAPHICS] wood texture: gradient + grain lines, used by the panels and buttons | SCREEN: Start + Setup + Game (all panels and buttons)
+    // ไทย: พื้นผิวไม้: ไล่สี + เส้นลายไม้ ใช้กับแผงและปุ่ม | อยู่ที่: หน้า Start + Setup + Game (แผงและปุ่มทุกอัน)
     /** Wooden board: gradient planks with grain lines and a dark rim. */
     public static void paintWood(Graphics2D g0, int x, int y, int w, int h, int arc) {
         Graphics2D g = (Graphics2D) g0.create();
@@ -153,7 +157,8 @@ public final class Theme {
         g.dispose();
     }
 
-    // [GRAPHICS] cream paper card with a soft border
+    // [GRAPHICS] cream paper card with a soft border | SCREEN: Start + Setup + Game (all panels and buttons)
+    // ไทย: การ์ดกระดาษสีครีมขอบนุ่ม | อยู่ที่: หน้า Start + Setup + Game (แผงและปุ่มทุกอัน)
     /** Old paper card with a soft edge. */
     public static void paintPaper(Graphics2D g0, int x, int y, int w, int h, int arc) {
         Graphics2D g = (Graphics2D) g0.create();

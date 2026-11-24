@@ -7,6 +7,7 @@ import java.util.Random;
 
 /** Background thread that turns rain on and off every 20-50 seconds (rain = more, hungrier fish). */
 // [PRESENT] THREAD 3 weather: switches rain on and off every 20-50 s
+// ไทย: thread ที่ 3 weather: เปิดปิดฝนทุก 20-50 วินาที
 public class WeatherThread extends Thread {
 
     private final LakeGame game;
@@ -33,6 +34,8 @@ public class WeatherThread extends Thread {
                     Thread.sleep(200);
                     if (!loop.isPaused()) slept += 200;
                 }
+            // [PRESENT] EXCEPTION: interrupted while sleeping = the thread stops cleanly
+            // ไทย: จัดการ exception: ถูกขัดจังหวะตอนหลับ = thread หยุดทำงานอย่างเรียบร้อย
             } catch (InterruptedException e) {
                 return;
             }

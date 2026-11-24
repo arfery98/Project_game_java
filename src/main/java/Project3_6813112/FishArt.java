@@ -25,7 +25,8 @@ public final class FishArt {
 
     private static final Color BONE = new Color(240, 234, 214);
 
-    // [GRAPHICS] ENTRY: draws one fish. Picks a body method by shape, wraps it in Shading, and cuts away parts when the fish was eaten (eaten = 0..3)
+    // [GRAPHICS] ENTRY: draws one fish. Picks a body method by shape, wraps it in Shading, and cuts away parts when the fish was eaten (eaten = 0..3) | SCREEN: Start (title fish) + Setup (fish preview) + Game (lake, How to Play)
+    // ไทย: จุดเข้า: วาดปลา 1 ตัว เลือกเมธอดตัวปลาตามรูปร่าง ห่อด้วย Shading และตัดชิ้นส่วนทิ้งเมื่อโดนกัด (eaten = 0..3) | อยู่ที่: หน้า Start (ปลาที่โลโก้) + Setup (รูปปลาตัวอย่าง) + Game (ทะเลสาบ, หน้าวิธีเล่น)
     /**
      * eaten = 0..3: a bigger fish bit the tail (1), then the back half (2), then the rest: only bones (3).
      * The eaten part is drawn as a skeleton.
@@ -489,7 +490,8 @@ public final class FishArt {
         eye(g, len * 0.3, -h * 0.16, Math.max(3, len * 0.07));
     }
 
-    // [GRAPHICS] normal fish body: Path2D outline + tail that wags with sin(anim) + fins + stripes + eye
+    // [GRAPHICS] normal fish body: Path2D outline + tail that wags with sin(anim) + fins + stripes + eye | SCREEN: Start (title fish) + Setup (fish preview) + Game (lake, How to Play)
+    // ไทย: ตัวปลาปกติ: เส้นขอบ Path2D + หางที่กระดิกด้วย sin(anim) + ครีบ + ลายขีด + ตา | อยู่ที่: หน้า Start (ปลาที่โลโก้) + Setup (รูปปลาตัวอย่าง) + Game (ทะเลสาบ, หน้าวิธีเล่น)
     private static void body(Graphics2D g, Species s, double len, double ratio, double anim) {
         double h = len * ratio;
         double wag = Math.sin(anim) * len * 0.07;
@@ -592,7 +594,8 @@ public final class FishArt {
         eye(g, len * 0.18, -h * 0.1, Math.max(2.5, len * 0.07));
     }
 
-    // [GRAPHICS] the eye: white, black pupil and a small white shine
+    // [GRAPHICS] the eye: white, black pupil and a small white shine | SCREEN: Start (title fish) + Setup (fish preview) + Game (lake, How to Play)
+    // ไทย: ตาปลา: ขาว รูม่านตาดำ และประกายขาวเล็กๆ | อยู่ที่: หน้า Start (ปลาที่โลโก้) + Setup (รูปปลาตัวอย่าง) + Game (ทะเลสาบ, หน้าวิธีเล่น)
     private static void eye(Graphics2D g, double x, double y, double r) {
         g.setColor(Color.WHITE);
         g.fill(new Ellipse2D.Double(x - r, y - r, r * 2, r * 2));

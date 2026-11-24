@@ -8,6 +8,7 @@ package Project3_6813112;
  * so the game runs at the same speed on every computer.
  */
 // [PRESENT] THREAD 1 game-loop: physics + repaint about 60 times a second (uses real dt)
+// ไทย: thread ที่ 1 game-loop: คำนวณฟิสิกส์และวาดใหม่ประมาณ 60 ครั้งต่อวินาที (ใช้เวลาจริง dt)
 public class GameLoop extends Thread {
 
     private final LakeGame game;
@@ -34,6 +35,8 @@ public class GameLoop extends Thread {
                 if (!paused) game.update(dt);
                 repaint.run();
                 failures = 0;
+            // [PRESENT] EXCEPTION: a bug in one frame is logged and the loop keeps running
+            // ไทย: จัดการ exception: บั๊กใน 1 เฟรมจะถูกบันทึก แล้ววงรอบเกมทำงานต่อ (ผิดซ้ำ 200 ครั้งจึงหยุด)
             } catch (RuntimeException e) {
                 // one bad frame must not kill the thread (the fish would freeze): report it and go on
                 if (failures++ == 0) e.printStackTrace();
@@ -41,6 +44,8 @@ public class GameLoop extends Thread {
             }
             try {
                 Thread.sleep(16);
+            // [PRESENT] EXCEPTION: interrupted while sleeping = the thread stops cleanly
+            // ไทย: จัดการ exception: ถูกขัดจังหวะตอนหลับ = thread หยุดทำงานอย่างเรียบร้อย
             } catch (InterruptedException e) {
                 break;
             }
@@ -53,5 +58,7 @@ public class GameLoop extends Thread {
     }
 
     public boolean isPaused() { return paused; }
+    // [PRESENT] RULE PAUSE flag (volatile): read by the game-loop thread and by WeatherThread
+    // ไทย: ธงหยุดเกม (volatile): game-loop thread และ WeatherThread อ่านค่าตัวเดียวกัน
     public void setPaused(boolean p) { paused = p; }
 }

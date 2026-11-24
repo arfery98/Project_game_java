@@ -29,9 +29,15 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 /** Second screen (after Start): angler name, fishing spot and trip length. Other settings live in Options. */
+// [PRESENT] REQUIRED FRAME 2 (JFrame): setup screen (name, fishing spot)
+// ไทย: Frame ที่ 2 (JFrame): หน้าจอตั้งค่า (ชื่อผู้เล่น เลือกสนามตกปลา)
 public class SetupFrame extends JFrame implements ActionListener, ItemListener {
 
+    // [PRESENT] REQUIRED COMPONENT JTextField: player name (admin = unlimited money)
+    // ไทย: component บังคับ JTextField: ช่องใส่ชื่อผู้เล่น (ชื่อ admin = เงินไม่จำกัด)
     private final JTextField nameField = new JTextField("Angler", 14);
+    // [PRESENT] REQUIRED COMPONENT JComboBox (5 items): choose the fishing spot
+    // ไทย: component บังคับ JComboBox (5 รายการ): เลือกสนามตกปลา
     private final JComboBox<Location> spotBox = new JComboBox<>(Location.values());
     private final JLabel spotDesc = new JLabel();
     private final JLabel optionsSummary = new JLabel();
@@ -158,12 +164,14 @@ public class SetupFrame extends JFrame implements ActionListener, ItemListener {
 
     /** Spot changed: show which fish live there. */
     // [PRESENT] EVENT ItemListener (JComboBox): choosing a fishing spot refreshes the fish list
+    // ไทย: event ItemListener (JComboBox): เลือกสนามตกปลา แล้วรายการปลารีเฟรช
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) updateSpot();
     }
 
     // [PRESENT] EVENT ActionListener: Options / How to Play / Back / Go Fishing (checks the JTextField name first)
+    // ไทย: event ActionListener: ปุ่ม Options / How to Play / Back / Go Fishing (เช็กชื่อใน JTextField ก่อน)
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
@@ -187,6 +195,8 @@ public class SetupFrame extends JFrame implements ActionListener, ItemListener {
                     GameOptions.rain, GameOptions.dayNight, GameOptions.easyReel, GameOptions.fishFinder,
                     GameOptions.volume);
             GameOptions.apply();
+            // [PRESENT] REQUIRED COMPONENT JButton that opens another window: Start -> game window
+            // ไทย: component บังคับ JButton ที่เปิดหน้าต่างอื่น: Start เปิดหน้าต่างเกม
             new GameFrame(s).setVisible(true);
             dispose();
         }

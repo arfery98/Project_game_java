@@ -208,6 +208,8 @@ public class HelpDialog extends JDialog {
     public HelpDialog(Window owner) {
         super(owner, thai ? "วิธีเล่น" : "How to Play", ModalityType.APPLICATION_MODAL);
         Logo.applyIcon(this);
+        // [PRESENT] REQUIRED COMPONENT JTextArea: the How to Play text
+        // ไทย: component บังคับ JTextArea: ข้อความวิธีเล่น (How to Play)
         JTextArea area = new JTextArea(fullText());
         area.setEditable(false);
         area.setLineWrap(true);                 // long lines wrap instead of adding a sideways scroll bar
@@ -240,6 +242,7 @@ public class HelpDialog extends JDialog {
         applyButtonFont(close, latinFont);
         applyButtonFont(language, latinFont);
         // [PRESENT] EVENT ActionListener (lambda): switch the How to Play text between English and Thai
+        // ไทย: event ActionListener (lambda): สลับข้อความวิธีเล่นระหว่างอังกฤษกับไทย
         language.addActionListener(e -> {
             thai = !thai;
             area.setText(fullText());

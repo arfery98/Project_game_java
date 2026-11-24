@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /** Program entry point: applies the theme, then opens the title screen (first frame). */
+// [PRESENT] REQUIRED: start class MainApplication (own file)
+// ไทย: คลาสเริ่มต้นชื่อ MainApplication อยู่ในไฟล์ของตัวเอง (ตามที่โจทย์กำหนด)
 public class MainApplication {
 
     public static void main(String[] args) {

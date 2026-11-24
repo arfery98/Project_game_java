@@ -20,7 +20,8 @@ public final class ItemArt {
 
     private ItemArt() { }
 
-    // [GRAPHICS] ENTRY: draws a shop item (rod, reel, lure or part) with Shading
+    // [GRAPHICS] ENTRY: draws a shop item (rod, reel, lure or part) with Shading | SCREEN: Game > Shop dialog
+    // ไทย: จุดเข้า: วาดสินค้าในร้าน (คัน รอก เหยื่อ หรือ Part) พร้อม Shading | อยู่ที่: หน้า Game > หน้าต่างร้านค้า (Shop)
     /** Draws the item's model inside the box (0, 0, w, h). */
     public static void draw(Graphics2D g0, ShopItem item, int w, int h, double t) {
         Graphics2D g = (Graphics2D) g0.create();
@@ -69,7 +70,8 @@ public final class ItemArt {
                 (1 - u) * (1 - u) * p0.getY() + 2 * (1 - u) * u * c.getY() + u * u * p1.getY());
     }
 
-    // [GRAPHICS] rod picture: curved Path2D with grip, rings and colour bands
+    // [GRAPHICS] rod picture: curved Path2D with grip, rings and colour bands | SCREEN: Game > Shop dialog
+    // ไทย: รูปคันเบ็ด: Path2D โค้ง มีด้าม ห่วงสาย และแถบสี | อยู่ที่: หน้า Game > หน้าต่างร้านค้า (Shop)
     private static void rod(Graphics2D g, Rod rod, int w, int h, double t) {
         Point2D p0 = new Point2D.Double(w * 0.16, h * 0.90), p1 = new Point2D.Double(w * 0.90, h * 0.16);
         Point2D c = new Point2D.Double(w * 0.55, h * 0.62);
@@ -179,7 +181,8 @@ public final class ItemArt {
     }
 
     // ------------------------------------------------------------------ lures
-    // [GRAPHICS] lure picture (bait) with a small bobbing animation from t
+    // [GRAPHICS] lure picture (bait) with a small bobbing animation from t | SCREEN: Game > Shop dialog
+    // ไทย: รูปเหยื่อ (lure) มีแอนิเมชันโยกเล็กน้อยจากค่า t | อยู่ที่: หน้า Game > หน้าต่างร้านค้า (Shop)
     private static void lure(Graphics2D g, Bait b, int w, int h, double t) {
         double cx = w * 0.5, cy = h * 0.46, r = Math.min(w, h) * 0.24 + (b == Bait.GOLDEN ? 4 : 0);
         Color c = b.getColor();

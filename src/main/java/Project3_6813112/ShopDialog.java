@@ -40,6 +40,7 @@ public class ShopDialog extends JDialog implements ActionListener {
 
     private final LakeGame game;
     // [PRESENT] EXTRA COMPONENT JTabbedPane: Rods / Reels / Lures / Parts
+    // ไทย: extra component JTabbedPane: แท็บในร้านค้า (คัน / รอก / เหยื่อ / Parts)
     private final JTabbedPane tabs = new JTabbedPane();
     private final List<List<Card>> cards = new ArrayList<>();
     private final List<ShopItem> selected = new ArrayList<>();
@@ -176,6 +177,7 @@ public class ShopDialog extends JDialog implements ActionListener {
     }
 
     // [PRESENT] EVENT ActionListener: Buy / Remove part / Back to fishing
+    // ไทย: event ActionListener: ปุ่ม Buy / Remove part / Back to fishing
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buyButton) buy();
@@ -194,6 +196,7 @@ public class ShopDialog extends JDialog implements ActionListener {
             setOpaque(false);
             addMouseListener(new MouseAdapter() {
                 // [PRESENT] EVENT MouseAdapter on a shop card: click selects, double-click buys
+                // ไทย: event MouseAdapter บนการ์ดสินค้า: คลิก = เลือก, ดับเบิลคลิก = ซื้อ
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     selected.set(tabs.getSelectedIndex(), Card.this.item);
@@ -202,6 +205,7 @@ public class ShopDialog extends JDialog implements ActionListener {
                 }
 
                 // [PRESENT] EVENT MouseAdapter on a shop card: hover highlight on
+                // ไทย: event MouseAdapter บนการ์ดสินค้า: เมาส์เข้า = ไฮไลต์
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     hover = true;
@@ -209,6 +213,7 @@ public class ShopDialog extends JDialog implements ActionListener {
                 }
 
                 // [PRESENT] EVENT MouseAdapter on a shop card: hover highlight off
+                // ไทย: event MouseAdapter บนการ์ดสินค้า: เมาส์ออก = เลิกไฮไลต์
                 @Override
                 public void mouseExited(MouseEvent e) {
                     hover = false;

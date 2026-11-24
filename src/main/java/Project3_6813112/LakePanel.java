@@ -82,13 +82,16 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     // =====================================================================
     // painting
     // =====================================================================
-    // [GRAPHICS] MAIN DRAW: paints the whole lake into a fixed 810x577 picture, scaled to the window (viewScale); calls the draw* methods below, back to front
+    // [GRAPHICS] MAIN DRAW: paints the whole lake into a fixed 810x577 picture, scaled to the window (viewScale); calls the draw* methods below, back to front | SCREEN: Game
+    // ไทย: วาดหลัก: วาดทะเลสาบทั้งหมดลงภาพคงที่ 810x577 แล้วขยายตามหน้าต่าง (viewScale) เรียกเมธอด draw* ด้านล่างจากหลังมาหน้า | อยู่ที่: หน้า Game
     @Override
     protected void paintComponent(Graphics g0) {
         super.paintComponent(g0);
         Graphics2D g = (Graphics2D) g0.create();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        // [PRESENT] RULE SCALING: the picture is drawn in a fixed 810x577 space and scaled, so resizing never changes the game logic
+        // ไทย: กฎสเกลภาพ: วาดในพื้นที่คงที่ 810x577 แล้วขยายตามหน้าต่าง การย่อขยายจึงไม่กระทบตรรกะเกม
         viewScale = Math.min((double) getWidth() / W, (double) getHeight() / H);
         viewOffX = (getWidth() - W * viewScale) / 2.0;
         viewOffY = (getHeight() - H * viewScale) / 2.0;
@@ -392,7 +395,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     private double sunX() { return par(W * 0.12 + W * 0.55 * sunProgress(), P_SKY); }
     private double moonX() { return par(W * 0.45 + 19, P_SKY); }
 
-    // [GRAPHICS] sky, sun/moon, clouds, hills (changes with the in-game clock)
+    // [GRAPHICS] sky, sun/moon, clouds, hills (changes with the in-game clock) | SCREEN: Game
+    // ไทย: ท้องฟ้า ดวงอาทิตย์/ดวงจันทร์ เมฆ ภูเขา (เปลี่ยนตามนาฬิกาในเกม) | อยู่ที่: หน้า Game
     private void drawSky(Graphics2D g, double day, boolean rain, double t) {
         updateCamera(t);
         Color top = mix(new Color(12, 16, 48), new Color(100, 170, 235), day);
@@ -536,7 +540,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         return (Math.sin(x * 0.045 + t * 1.8) * 2.2 + Math.sin(x * 0.11 - t * 2.6) * 1.1) * amp;
     }
 
-    // [GRAPHICS] water in the side view: gradient by depth + wave lines + light rays
+    // [GRAPHICS] water in the side view: gradient by depth + wave lines + light rays | SCREEN: Game
+    // ไทย: น้ำในมุมมองด้านข้าง: ไล่สีตามความลึก + เส้นคลื่น + ลำแสง | อยู่ที่: หน้า Game
     private void drawWater(Graphics2D g, double day, double t) {
         Location loc = game.getSettings().location();
         Color top = mix(loc.getWaterTop().darker().darker(), loc.getWaterTop(), 0.35 + 0.65 * day);
@@ -660,7 +665,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.fill(new Ellipse2D.Double(f.getX() - r, f.getY() - r, r * 2, r * 2));
     }
 
-    // [GRAPHICS] side view: draws every fish with FishArt.draw (tail wag from Fish animation phase)
+    // [GRAPHICS] side view: draws every fish with FishArt.draw (tail wag from Fish animation phase) | SCREEN: Game
+    // ไทย: มุมมองด้านข้าง: วาดปลาทุกตัวด้วย FishArt.draw (หางกระดิกตามเฟสแอนิเมชันของปลา) | อยู่ที่: หน้า Game
     private void drawFish(Graphics2D g) {
         boolean finder = game.getSettings().fishFinder();
         for (Fish f : game.fishSnapshot()) {
@@ -714,7 +720,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.dispose();
     }
 
-    // [GRAPHICS] water in the 2.5-D view before casting (uses Perspective)
+    // [GRAPHICS] water in the 2.5-D view before casting (uses Perspective) | SCREEN: Game
+    // ไทย: น้ำในมุมมอง 2.5 มิติก่อนโยนเบ็ด (ใช้ Perspective) | อยู่ที่: หน้า Game
     private void drawWater3D(Graphics2D g, double day, double t) {
         Location loc = game.getSettings().location();
         Color near = mix(Color.BLACK, mix(loc.getWaterTop(), loc.getWaterBottom(), 0.45), 0.45 + 0.55 * day);
@@ -781,7 +788,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         b.dispose();
     }
 
-    // [GRAPHICS] 2.5-D view: fish shown as dark shadow blobs under the water
+    // [GRAPHICS] 2.5-D view: fish shown as dark shadow blobs under the water | SCREEN: Game
+    // ไทย: มุมมอง 2.5 มิติ: ปลาเป็นเงาดำใต้น้ำ | อยู่ที่: หน้า Game
     private void drawFish3D(Graphics2D g) {
         projected.clear();
         java.util.List<Fish> list = game.fishSnapshot();
@@ -804,7 +812,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
-    // [GRAPHICS] the wooden dock and the angler in the 2.5-D view
+    // [GRAPHICS] the wooden dock and the angler in the 2.5-D view | SCREEN: Game
+    // ไทย: ท่าเรือไม้และตัวนักตกปลาในมุมมอง 2.5 มิติ | อยู่ที่: หน้า Game
     /** Foreground: a wooden dock running toward the vanishing point, the angler seen from behind. */
     private void drawDock3D(Graphics2D g, double t) {
         double vx = Perspective.CENTER_X, vy = Perspective.HORIZON;
@@ -928,7 +937,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.setStroke(new BasicStroke(1f));
     }
 
-    // [GRAPHICS] the hook and the lure at the end of the line
+    // [GRAPHICS] the hook and the lure at the end of the line | SCREEN: Game
+    // ไทย: ตะขอและเหยื่อที่ปลายสาย | อยู่ที่: หน้า Game
     /** The lure at the end of the line: a coloured jig. The colour is the lure class; you never see a fish here. */
     private void drawHookSprite(Graphics2D g, double hx, double hy, double k) {
         Angler a = game.getAngler();
@@ -1136,7 +1146,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         g.setStroke(new BasicStroke(1f));
     }
 
-    // [GRAPHICS] the fishing line from the rod tip to the hook (a Path2D curve)
+    // [GRAPHICS] the fishing line from the rod tip to the hook (a Path2D curve) | SCREEN: Game
+    // ไทย: สายเบ็ดจากปลายคันถึงตะขอ (เส้นโค้ง Path2D) | อยู่ที่: หน้า Game
     private void drawLine(Graphics2D g) {
         LakeGame.Phase ph = game.getPhase();
         if (ph == LakeGame.Phase.IDLE || ph == LakeGame.Phase.CHARGING
@@ -1166,7 +1177,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         if (ph != LakeGame.Phase.REELING) drawHookSprite(g, hx, hy, 1);
     }
 
-    // [GRAPHICS] rain: many short lines, positions from the time t
+    // [GRAPHICS] rain: many short lines, positions from the time t | SCREEN: Game
+    // ไทย: ฝน: เส้นสั้นๆ จำนวนมาก ตำแหน่งคำนวณจากเวลา t | อยู่ที่: หน้า Game
     private void drawRain(Graphics2D g, double t) {
         g.setColor(new Color(200, 210, 230, 140));
         Random r = new Random(3);
@@ -1178,7 +1190,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     // ---------------- HUD: hanging wooden sign + depth stick ----------------
-    // [GRAPHICS] the wooden sign: money, clock, bait
+    // [GRAPHICS] the wooden sign: money, clock, bait | SCREEN: Game
+    // ไทย: ป้ายไม้: เงิน นาฬิกา เหยื่อ | อยู่ที่: หน้า Game
     private void drawHud(Graphics2D g, double t) {
         Angler a = game.getAngler();
         int played = (int) game.getElapsed();
@@ -1272,7 +1285,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
-    // [GRAPHICS] the power bar (green to red) and the moving marker
+    // [GRAPHICS] the power bar (green to red) and the moving marker | SCREEN: Game
+    // ไทย: แถบพลัง (เขียวไปแดง) และตัวชี้ที่เคลื่อนที่ | อยู่ที่: หน้า Game
     /**
      * Cast power bar: a vertical green -> red bar with a marker that sweeps up and down.
      * Click 2 (or Space) stops it; the power at that moment decides how far the line goes.
@@ -1319,7 +1333,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     // ---------------- reel gauge (tension dial) ----------------
-    // [GRAPHICS] the tension gauge: arc with green/yellow/red zones and the needle
+    // [GRAPHICS] the tension gauge: arc with green/yellow/red zones and the needle | SCREEN: Game
+    // ไทย: มาตรวัดแรงตึง: ส่วนโค้งโซนเขียว/เหลือง/แดง และเข็ม | อยู่ที่: หน้า Game
     private void drawReeling(Graphics2D g, double t) {
         double ten = game.getTension(), limit = game.getTensionLimit();
         double max = 1.25;                       // dial shows 0 .. 1.25
@@ -1389,7 +1404,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     // ---------------- catch: fish leaps out, then the card pops ----------------
-    // [GRAPHICS] the catch card: fish picture, size, price, Sell / Keep buttons
+    // [GRAPHICS] the catch card: fish picture, size, price, Sell / Keep buttons | SCREEN: Game
+    // ไทย: การ์ดปลาที่จับได้: รูปปลา ขนาด ราคา ปุ่ม Sell / Keep | อยู่ที่: หน้า Game
     private void drawCatch(Graphics2D g, double t) {
         CatchRecord c = game.getLastCatch();
         if (c == null) return;
@@ -1553,6 +1569,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
 
     /** Press: start aiming, strike, start reeling or close the catch card - depending on the phase. */
     // [PRESENT] EVENT MouseListener: click = start power bar / throw / reel / sell or keep the catch
+    // ไทย: event MouseListener (คลิก): เริ่มแถบพลัง / โยน / ม้วน / ขายหรือเก็บปลา
     @Override
     public void mousePressed(MouseEvent e) {
         Point lp = logical(e);
@@ -1578,6 +1595,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
 
     /** Releasing the button stops reeling. */
     // [PRESENT] EVENT MouseListener (release): stop reeling
+    // ไทย: event MouseListener (ปล่อยเมาส์): หยุดม้วน
     @Override
     public void mouseReleased(MouseEvent e) {
         mouseDown = false;
@@ -1586,6 +1604,7 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
 
     /** Hover over a fish to see its name (when Fish Finder is on). */
     // [PRESENT] EVENT MouseMotionListener: hover over a fish to see its name (fish finder)
+    // ไทย: event MouseMotionListener: เลื่อนเมาส์ไปบนปลาเพื่อดูชื่อ (fish finder)
     @Override
     public void mouseMoved(MouseEvent e) {
         Point lp = logical(e);
@@ -1617,7 +1636,8 @@ public class LakePanel extends JPanel implements MouseListener, MouseMotionListe
         setCursor(Cursor.getPredefinedCursor(game.getPhase() == LakeGame.Phase.IDLE ? Cursor.CROSSHAIR_CURSOR : Cursor.HAND_CURSOR));
     }
 
-    // [GRAPHICS] turns a mouse position in the window into a position in the fixed picture (inverse of viewScale)
+    // [GRAPHICS] turns a mouse position in the window into a position in the fixed picture (inverse of viewScale) | SCREEN: Game
+    // ไทย: แปลงตำแหน่งเมาส์ในหน้าต่างเป็นตำแหน่งในภาพคงที่ (ย้อนกลับของ viewScale) | อยู่ที่: หน้า Game
     /** Converts a mouse position to the fixed 810 x 577 picture that the game is drawn in. */
     private Point logical(MouseEvent e) {
         return new Point((int) Math.round((e.getX() - viewOffX) / viewScale), (int) Math.round((e.getY() - viewOffY) / viewScale));

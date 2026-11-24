@@ -21,7 +21,8 @@ public final class Icons {
 
     /** Draws an icon into a size x size box. */
     public interface Painter {
-        // [GRAPHICS] every icon is a small painter: shapes drawn at size s, no image files
+        // [GRAPHICS] every icon is a small painter: shapes drawn at size s, no image files | SCREEN: Start + Setup + Game (icons on every button)
+        // ไทย: ทุกไอคอนคือ painter เล็กๆ วาดรูปทรงตามขนาด s ไม่มีไฟล์รูป | อยู่ที่: หน้า Start + Setup + Game (ไอคอนบนปุ่มทุกปุ่ม)
         void paint(Graphics2D g, int s);
     }
 

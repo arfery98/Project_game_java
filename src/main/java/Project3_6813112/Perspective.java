@@ -5,7 +5,8 @@ package Project3_6813112;
 
 import java.awt.geom.Point2D;
 
-// [GRAPHICS] turns a position in the flat world into a screen position with depth (2.5-D) before casting
+// [GRAPHICS] turns a position in the flat world into a screen position with depth (2.5-D) before casting | SCREEN: Game (view before casting)
+// ไทย: แปลงตำแหน่งในโลกแบนเป็นตำแหน่งบนจอแบบมีความลึก (2.5 มิติ) ก่อนโยนเบ็ด | อยู่ที่: หน้า Game (มุมมองก่อนโยนเบ็ด)
 /**
  * Maps the game's 2-D world (x = distance from the dock, y = depth) into the
  * 3-D "behind the angler" camera view.

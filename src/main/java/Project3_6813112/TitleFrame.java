@@ -28,6 +28,8 @@ import javax.swing.Timer;
  * The first screen: logo over a calm lake, with Start / Options / Exit.
  * (A "Continue" button can be added under Start when saving is implemented.)
  */
+// [PRESENT] REQUIRED FRAME 1 (JFrame): title screen with the menu buttons
+// ไทย: Frame ที่ 1 (JFrame): หน้าจอ title มีปุ่มเมนู
 public class TitleFrame extends JFrame implements ActionListener {
 
     private final FancyButton startButton = new FancyButton("Start", Icons.play(24), FancyButton.Style.GREEN);
@@ -75,10 +77,13 @@ public class TitleFrame extends JFrame implements ActionListener {
     }
 
     // [PRESENT] EVENT ActionListener (JButton): Start / Options / Exit
+    // ไทย: event ActionListener (JButton): ปุ่ม Start / Options / Exit
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startButton) {
             animation.stop();
+            // [PRESENT] REQUIRED COMPONENT JButton that opens another window: Play -> setup screen
+            // ไทย: component บังคับ JButton ที่เปิดหน้าต่างอื่น: Play เปิดหน้าตั้งค่า
             new SetupFrame().setVisible(true);
             dispose();
         } else if (e.getSource() == optionsButton) {

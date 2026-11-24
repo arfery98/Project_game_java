@@ -45,6 +45,7 @@ public class FishdexDialog extends JDialog implements ActionListener {
             public boolean isCellEditable(int r, int c) { return false; }
         };
         // [PRESENT] EXTRA COMPONENT JTable: every species, price and what you caught
+        // ไทย: extra component JTable: ตารางปลาทุกชนิด ราคา และที่จับได้
         JTable table = new JTable(model);
         Theme.styleTable(table);
         table.setRowHeight(38);
@@ -97,6 +98,7 @@ public class FishdexDialog extends JDialog implements ActionListener {
     }
 
     // [PRESENT] EVENT ActionListener (JComboBox): choose a size class, the table reloads
+    // ไทย: event ActionListener (JComboBox): เลือกขนาดปลา แล้วตารางโหลดใหม่
     @Override
     public void actionPerformed(ActionEvent e) {
         reload();

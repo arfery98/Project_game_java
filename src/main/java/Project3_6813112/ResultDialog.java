@@ -29,6 +29,8 @@ public class ResultDialog extends JDialog {
 
     private static final List<Entry> BOARD = new ArrayList<>();
 
+    // [PRESENT] RULE LEADERBOARD: kept in memory (lost when the program closes), ranked by money per minute, admin trips skipped
+    // ไทย: กฎ leaderboard: เก็บในหน่วยความจำ (หายเมื่อปิดโปรแกรม) เรียงตามเงินต่อนาที ทริป admin ไม่นับ
     public static void record(LakeGame g) {
         Angler a = g.getAngler();
         if (a.isUnlimited()) return;                   // admin trips (unlimited money) are not ranked
@@ -81,6 +83,7 @@ public class ResultDialog extends JDialog {
                 String.format("%.0f", e.perMinute()), e.fish(), e.best()});
         }
         // [PRESENT] EXTRA COMPONENT JTable: leaderboard of the best trips
+        // ไทย: extra component JTable: ตารางอันดับทริปที่ดีที่สุด
         JTable table = new JTable(model);
         Theme.styleTable(table);
         table.getColumnModel().getColumn(0).setPreferredWidth(30);
@@ -95,18 +98,21 @@ public class ResultDialog extends JDialog {
         FancyButton menu = new FancyButton("Main menu", Icons.cog(18), FancyButton.Style.WOOD);
         FancyButton exit = new FancyButton("Exit", Icons.door(18), FancyButton.Style.RED);
         // [PRESENT] EVENT ActionListener (lambda): Fish again
+        // ไทย: event ActionListener (lambda): ปุ่ม Fish again (เล่นอีกรอบ)
         again.addActionListener(e -> {
             dispose();
             owner.dispose();
             new SetupFrame().setVisible(true);
         });
         // [PRESENT] EVENT ActionListener (lambda): Main menu
+        // ไทย: event ActionListener (lambda): ปุ่ม Main menu (กลับหน้าแรก)
         menu.addActionListener(e -> {
             dispose();
             owner.dispose();
             new TitleFrame().setVisible(true);
         });
         // [PRESENT] EVENT ActionListener (lambda): Exit
+        // ไทย: event ActionListener (lambda): ปุ่ม Exit (ออกจากโปรแกรม)
         exit.addActionListener(e -> System.exit(0));
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
         buttons.add(again);

@@ -21,6 +21,7 @@ public final class SoundFX {
     private static volatile int volume = 60;   // 0..100
     private static final java.util.concurrent.atomic.AtomicInteger PENDING = new java.util.concurrent.atomic.AtomicInteger();
     // [PRESENT] THREAD 4 sound-fx: one background thread plays the generated sounds (max 3 waiting)
+    // ไทย: thread ที่ 4 sound-fx: thread เบื้องหลังเดียวเล่นเสียงที่สร้างจากโค้ด (รอคิวได้สูงสุด 3)
     private static final ExecutorService AUDIO = Executors.newSingleThreadExecutor(r -> {
         Thread t = new Thread(r, "sound-fx");
         t.setDaemon(true);
@@ -46,6 +47,8 @@ public final class SoundFX {
         });
     }
 
+    // [PRESENT] RULE SOUND FROM CODE: no audio files; builds 16-bit samples (sine tones and filtered noise) and plays them through javax.sound.sampled SourceDataLine
+    // ไทย: กฎเสียงจากโค้ด: ไม่มีไฟล์เสียง สร้างตัวอย่างเสียง 16 บิต (คลื่นไซน์และ noise กรอง) แล้วเล่นผ่าน SourceDataLine ของ javax.sound.sampled
     private static void synth(int[] seq) {
         try {
             AudioFormat fmt = new AudioFormat(RATE, 16, 1, true, false);
@@ -92,6 +95,8 @@ public final class SoundFX {
                 }
                 line.drain();
             }
+        // [PRESENT] EXCEPTION: no sound device = the game runs on without sound
+        // ไทย: จัดการ exception: ไม่มีอุปกรณ์เสียง = เกมเล่นต่อได้โดยไม่มีเสียง
         } catch (LineUnavailableException | IllegalArgumentException e) {
             // no audio device (or no 16-bit line): the game is still fully playable, so switch the sound off
             if (enabled) System.err.println("Sound is not available on this computer: " + e.getMessage());
@@ -207,6 +212,8 @@ public final class SoundFX {
             }
         } catch (InterruptedException e) {
             // the program is closing
+        // [PRESENT] EXCEPTION: no sound device = the game runs on without sound
+        // ไทย: จัดการ exception: ไม่มีอุปกรณ์เสียง = เกมเล่นต่อได้โดยไม่มีเสียง
         } catch (LineUnavailableException | IllegalArgumentException e) {
             loopBroken = true;               // no audio device: the game is still fully playable
         } catch (RuntimeException e) {

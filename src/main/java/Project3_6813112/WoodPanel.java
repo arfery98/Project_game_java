@@ -9,6 +9,8 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 /** A panel whose background is painted as wood planks or as paper. */
+// [PRESENT] OOP INHERITANCE: custom JPanel with a wood look
+// ไทย: OOP inheritance: JPanel แบบกำหนดเอง ลายไม้
 public class WoodPanel extends JPanel {
 
     public enum Kind { WOOD, PAPER }

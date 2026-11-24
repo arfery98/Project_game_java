@@ -100,6 +100,8 @@ public class LakeGame {
         this.settings = settings;
         this.bottomY = SURFACE + settings.location().getDepth();
         this.angler = new Angler(settings.name());
+        // [PRESENT] RULE ADMIN: player name "admin" = unlimited money (test mode); such trips are not ranked on the leaderboard
+        // ไทย: กฎ admin: ชื่อผู้เล่น admin = เงินไม่จำกัด (โหมดทดสอบ) และไม่ถูกจัดอันดับใน leaderboard
         if (settings.name().trim().equalsIgnoreCase("admin")) angler.setUnlimited(true);      // admin: unlimited money
         this.clock = settings.dayNight() ? 15 * 60 : (settings.location().isAlwaysNight() ? 22 * 60 : 10 * 60);
         populate(40);
@@ -109,6 +111,9 @@ public class LakeGame {
     // simulation step (game-loop thread)
     // =====================================================================
     // [PRESENT] SYNCHRONIZED: the model is shared by game-loop, fish-spawner, weather and the Swing thread, so its methods are synchronized
+    // ไทย: synchronized: โมเดลถูกใช้ร่วมกันโดย game-loop, fish-spawner, weather และ thread ของ Swing จึงต้องล็อกทุกเมธอด
+    // [PRESENT] RULE game tick: called by the game-loop thread; moves phase IDLE > CHARGING > CASTING > WAITING > BITE > REELING > CAUGHT
+    // ไทย: กฎรอบเกม: game-loop thread เรียกทุกเฟรม เดินเฟส IDLE > CHARGING > CASTING > WAITING > BITE > REELING > CAUGHT
     public synchronized void update(double dt) {
         if (over) return;
         elapsed += dt;
@@ -200,6 +205,8 @@ public class LakeGame {
         return Math.min(WORLD_W - 120, ROD_X + Math.sqrt(Math.max(1, reach * reach - dy * dy)));
     }
 
+    // [PRESENT] RULE FISH COMES TO THE HOOK: hook swings in; a WANDER fish inside 200 px (250 rain, x1.25 Lure Charm) and its depth band may turn APPROACH; touches the lure (< 3 px) = hooked
+    // ไทย: กฎปลามาที่เบ็ด: เบ็ดแกว่งลงเอง ปลา WANDER ในรัศมี 200 px (ฝน 250, Lure Charm x1.25) และอยู่ชั้นความลึกของมัน อาจเปลี่ยนเป็น APPROACH, แตะเหยื่อ (< 3 px) = ติดเบ็ดทันที
     private void updateWaiting(double dt) {
         // the hook swings in by itself; before a fish bites the only control is pulling it up
         // the hook keeps swinging while a fish swims toward it, but holds still once a fish is eating
@@ -285,6 +292,8 @@ public class LakeGame {
      * Nothing of its own size or bigger (it cannot swallow it) and nothing smaller ("Need bigger bait!").
      * Legends only want the golden lure.
      */
+    // [PRESENT] RULE BAIT (the check itself): appeal 1.0 only if lure class == fish class - 1, else 0 ("Need bigger bait!"); legends want the golden lure
+    // ไทย: กฎเหยื่อ (ตัวเช็กจริง): ความน่ากิน 1.0 เฉพาะเมื่อไซส์เหยื่อ = ไซส์ปลา - 1 นอกนั้น 0 (ขึ้น Need bigger bait!) ปลาตำนานกินแต่เหยื่อทอง
     private double lureAppeal(Fish f) {
         int lure = lureTier();
         Species sp = f.getSpecies();
@@ -324,6 +333,8 @@ public class LakeGame {
         }
     }
 
+    // [PRESENT] RULE TENSION: hold = target 0.30+pull, release = pull*0.6; over the limit too long = line snaps
+    // ไทย: กฎแรงตึงสาย: กดดึง เป้า = 0.30 + แรงปลา, ปล่อย เป้า = แรงปลา x 0.6, เกินขีดนานเกินไป = สายขาด
     private void updateReeling(double dt) {
         Fish f = reelFish;
         Species sp = f.getSpecies();
@@ -424,6 +435,8 @@ public class LakeGame {
         else SoundFX.caught();
     }
 
+    // [PRESENT] RULE LOSE THE FISH: called when the line snaps (tension over the limit), goes slack too long, or the fish runs away with the line; the fish is scared and phase returns to IDLE
+    // ไทย: กฎปลาหลุด: เรียกเมื่อสายขาด (แรงตึงเกินขีด) สายหย่อนนานเกิน หรือปลาลากสายหมด ปลาตกใจและเกมกลับไป IDLE
     private void lose(String why) {
         endHunt();
         escaped++;
@@ -436,6 +449,8 @@ public class LakeGame {
         log.add(why);
     }
 
+    // [PRESENT] RULE SCARE: a fish that lost the lure (or got pulled away) is startled and swims off for a while
+    // ไทย: กฎปลาตกใจ: ปลาที่เสียเหยื่อหรือถูกดึงหลุด จะตกใจและว่ายหนีไปสักพัก
     private void scare(Fish f) {
         if (f == null) return;
         f.startled(hookX);
@@ -476,6 +491,8 @@ public class LakeGame {
         for (int i = 0; i < n; i++) spawnOne(SHORE_X + 80 + rnd.nextDouble() * (WORLD_W - SHORE_X - 130));
     }
 
+    // [PRESENT] RULE fish spawning: called by the fish-spawner thread every 0.8 s (cap 60 fish, 70 in rain)
+    // ไทย: กฎสร้างปลา: fish-spawner thread เรียกทุก 0.8 วินาที (สูงสุด 60 ตัว, ฝน 70 ตัว)
     public synchronized void spawnTick() {
         if (over) return;
         int max = 60 + (raining ? 10 : 0);
@@ -545,6 +562,8 @@ public class LakeGame {
     }
 
     /** True if a fish (not a legend) of this size class could bite a lure of class B: only B = F-1. */
+    // [PRESENT] RULE BAIT: a fish of size class N only bites bait N-1 (legends need the golden lure)
+    // ไทย: กฎเหยื่อ: ปลาไซส์ N กินเฉพาะเหยื่อไซส์ N-1 (ปลาตำนานต้องใช้เหยื่อทอง)
     private static boolean canBiteClass(int lure, int fishTier) {
         return lure != 9 && lure == fishTier - 1;
     }
@@ -691,6 +710,8 @@ public class LakeGame {
         // a bigger fish may try to eat the catch on its way up
         huntLeft = 0;
         hunter = null;
+        // [PRESENT] RULE PREDATOR 1/3 roll: 40% (16% with Fish Guard) that a bigger fish will come and bite the catch 1-3 times
+        // ไทย: กฎปลานักล่า 1/3 สุ่ม: ตอนติดเบ็ดมีโอกาส 40% (16% ถ้ามี Fish Guard) ที่ปลาใหญ่กว่าจะมากัดปลาที่ดึงอยู่ 1-3 ครั้ง
         if (!reelFish.getSpecies().isLegendary() && reelFish.getTier() < 4 && rnd.nextDouble() < (angler.has(Part.FISH_GUARD) ? 0.16 : 0.4)) {
             huntLeft = 1 + (rnd.nextDouble() < 0.4 ? 1 : 0) + (rnd.nextDouble() < 0.15 ? 1 : 0);
             huntTimer = 1.0 + rnd.nextDouble() * 1.2;
@@ -720,6 +741,8 @@ public class LakeGame {
         huntLeft = 0;
     }
 
+    // [PRESENT] RULE PREDATOR 2/3 choose: a species of a bigger size class near the prey's depth and time of day (weighted random)
+    // ไทย: กฎปลานักล่า 2/3 เลือกชนิด: เลือกชนิดที่ไซส์ใหญ่กว่า อยู่ชั้นน้ำใกล้เหยื่อ และตรงช่วงกลางวัน/กลางคืน (สุ่มถ่วงน้ำหนัก)
     private void spawnHunter(Fish prey) {
         List<Species> pool = new ArrayList<>();
         int total = 0;
@@ -761,6 +784,8 @@ public class LakeGame {
         SoundFX.splash();
     }
 
+    // [PRESENT] RULE PREDATOR 3/3 bite: eaten++, line tension +0.25, price 70% > 40% > 10% (3rd bite = bones)
+    // ไทย: กฎปลานักล่า 3/3 กัด: นับครั้งที่โดนกัด, แรงตึงสาย +0.25, ราคาเหลือ 70% > 40% > 10% (ครั้งที่ 3 เหลือแต่ก้าง)
     private void chomp(Fish prey) {
         prey.eaten++;
         chomps++;
@@ -802,6 +827,8 @@ public class LakeGame {
     }
 
     /** Sell the fish on the card (Space / the Sell button / waiting too long). */
+    // [PRESENT] RULE SELL: Space / Sell button / 8 s without choosing; money += value and phase back to IDLE
+    // ไทย: กฎขายปลา: Space / ปุ่ม Sell / ไม่เลือกใน 8 วินาที = ขายเอง เงินเพิ่มตามราคาแล้วกลับ IDLE
     public synchronized void sellCatch() {
         if (phase != Phase.CAUGHT || lastCatch == null) return;
         angler.sell(lastCatch);
@@ -813,6 +840,8 @@ public class LakeGame {
     }
 
     /** Keep the fish on the card as live bait (B / the Keep button). Not allowed for legends or a full box. */
+    // [PRESENT] RULE KEEP AS BAIT: B / Keep button; not for legends or a full box; the kept fish becomes live bait for bigger fish
+    // ไทย: กฎเก็บเป็นเหยื่อ: ปุ่ม B / ปุ่ม Keep ใช้ไม่ได้กับปลาตำนานหรือกล่องเต็ม ปลาที่เก็บกลายเป็นเหยื่อสดล่อปลาตัวใหญ่ขึ้น
     public synchronized void keepCatchAsBait() {
         if (phase != Phase.CAUGHT || lastCatch == null) return;
         String why = angler.keepBlockReason(lastCatch);
@@ -872,6 +901,8 @@ public class LakeGame {
     // =====================================================================
     // queries
     // =====================================================================
+    // [PRESENT] RULE TIME: game clock runs 4 game-minutes per real second; night is 19:00-06:00; some fish appear only by day or night
+    // ไทย: กฎเวลา: นาฬิกาเกมเดิน 4 นาทีเกมต่อ 1 วินาทีจริง กลางคืนคือ 19:00-06:00 ปลาบางชนิดออกเฉพาะกลางวันหรือกลางคืน
     public boolean isNight() {
         if (settings.location().isAlwaysNight()) return true;
         int h = (int) (clock / 60);

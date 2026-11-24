@@ -116,7 +116,8 @@ public class HelpGuide extends JPanel {
         return Species.values()[0];
     }
 
-    // [GRAPHICS] the 9 small animated pictures in How to Play; a Swing Timer (40 ms) changes t and repaints
+    // [GRAPHICS] the 9 small animated pictures in How to Play; a Swing Timer (40 ms) changes t and repaints | SCREEN: Game / Setup > How to Play dialog (Help button)
+    // ไทย: ภาพเคลื่อนไหวเล็ก 9 ภาพในหน้าวิธีเล่น ใช้ Swing Timer (40 ms) เปลี่ยนค่า t แล้ว repaint | อยู่ที่: หน้า Game และ Setup > หน้าต่างวิธีเล่น (ปุ่ม Help)
     private static final class Diagram extends JComponent {
         private final int kind;
 

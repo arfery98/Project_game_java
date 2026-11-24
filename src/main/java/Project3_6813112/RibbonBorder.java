@@ -16,6 +16,8 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.border.AbstractBorder;
 
 /** Section frame: a paper card with a coloured ribbon carrying the title. */
+// [PRESENT] OOP INHERITANCE: custom AbstractBorder drawn with Java2D
+// ไทย: OOP inheritance: กรอบ AbstractBorder แบบกำหนดเอง วาดด้วย Java2D
 public class RibbonBorder extends AbstractBorder {
 
     private final String title;

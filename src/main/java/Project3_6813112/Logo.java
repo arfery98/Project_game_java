@@ -35,7 +35,8 @@ public final class Logo {
 
     private Logo() { }
 
-    // [GRAPHICS] LOGO: the round fish-with-straw-hat emblem, all Java2D shapes
+    // [GRAPHICS] LOGO: the round fish-with-straw-hat emblem, all Java2D shapes | SCREEN: Start + Setup + Game (logo and title lettering)
+    // ไทย: โลโก้: ตราปลาสวมหมวกฟางทรงกลม ใช้รูปทรง Java2D ทั้งหมด | อยู่ที่: หน้า Start + Setup + Game (โลโก้และชื่อเกม)
     /**
      * Paints the round emblem centred at (cx, cy).
      * @param size diameter in pixels
@@ -133,7 +134,8 @@ public final class Logo {
         rg.dispose();
     }
 
-    // [GRAPHICS] the "Fish Goes Fishing" lettering
+    // [GRAPHICS] the "Fish Goes Fishing" lettering | SCREEN: Start + Setup + Game (logo and title lettering)
+    // ไทย: ตัวอักษรชื่อเกม Fish Goes Fishing | อยู่ที่: หน้า Start + Setup + Game (โลโก้และชื่อเกม)
     /** Wordmark: lowercase, wide-tracked, clean sans. Returns the width drawn. */
     public static double paintWordmark(Graphics2D g0, double x, double baselineY, double fontSize, Color color, boolean centred) {
         Graphics2D g = (Graphics2D) g0.create();

@@ -4,6 +4,8 @@
 package Project3_6813112;
 
 /** Group member names & IDs. Edit this one place - every screen reads from here. */
+// [PRESENT] REQUIRED: member names + IDs (shown on the title screen and in the credits)
+// ไทย: ชื่อและรหัสสมาชิกทุกคน (แสดงบนหน้าจอ title และหน้า credits)
 public final class Credits {
 
     public static final String[] MEMBERS = {

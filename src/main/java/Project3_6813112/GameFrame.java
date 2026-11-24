@@ -39,6 +39,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /** Second frame: the lake + tackle box + catch log + buttons. Starts the game threads. */
+// [PRESENT] REQUIRED FRAME 3 (JFrame): the game window
+// ไทย: Frame ที่ 3 (JFrame): หน้าต่างเกมหลัก
 public class GameFrame extends JFrame implements ActionListener, KeyListener, ItemListener {
 
     private final LakeGame game;
@@ -51,6 +53,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
 
     private final CatchModel catchModel = new CatchModel();
     // [PRESENT] EXTRA COMPONENT JTable + custom AbstractTableModel: today's catch (see CatchModel below)
+    // ไทย: extra component JTable + AbstractTableModel ที่เขียนเอง: ปลาที่จับได้วันนี้ (ดู CatchModel ด้านล่าง)
     private final JTable catchTable = new JTable(catchModel);
     private final EnumMap<Species, Icon> fishIcons = new EnumMap<>(Species.class);
     private final JComboBox<Object> baitBox = new JComboBox<>();       // normal baits + fish kept as live bait
@@ -59,6 +62,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
     private final JLabel countLabel = new JLabel();
     private final JLabel gearLabel = new JLabel();
     // [PRESENT] EXTRA COMPONENT JTextPane: coloured notes / log lines
+    // ไทย: extra component JTextPane: ข้อความบันทึกเกมมีสี
     private final javax.swing.JTextPane logArea = new javax.swing.JTextPane();      // the notes, with coloured lines
     private final FancyButton shopBtn = new FancyButton("Shop", Icons.bag(18), FancyButton.Style.GOLD);
     private final FancyButton dexBtn = new FancyButton("Fishdex", Icons.book(18), FancyButton.Style.BLUE);
@@ -89,6 +93,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             // [PRESENT] EVENT WindowListener (WindowAdapter): closing the window stops the threads and exits
+            // ไทย: event WindowListener (WindowAdapter): ปิดหน้าต่าง = หยุด thread แล้วออกจากโปรแกรม
             @Override
             public void windowClosing(WindowEvent e) {
                 stopThreads();
@@ -283,6 +288,8 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
         lake.requestFocusInWindow();
     }
 
+    // [PRESENT] RULE PAUSE: only sets a volatile flag; the game-loop thread keeps running but skips game.update(dt); the weather thread also waits
+    // ไทย: กฎหยุดเกม: แค่ตั้งธง volatile, game-loop thread ยังวิ่งแต่ข้าม game.update(dt), weather thread รอด้วย
     private void togglePause() {
         if (game.isOver()) return;
         loop.setPaused(!loop.isPaused());
@@ -316,9 +323,12 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
     // ================= event handlers =================
 
     // [PRESENT] EVENT ActionListener (JButton): Shop / Fishdex / Help / Pause / End trip buttons
+    // ไทย: event ActionListener (JButton): ปุ่ม Shop / Fishdex / Help / Pause / End trip
     @Override
     public void actionPerformed(ActionEvent e) {
         Object s = e.getSource();
+        // [PRESENT] REQUIRED COMPONENT JButton that opens another window: Shop / Fishdex / Help dialogs
+        // ไทย: component บังคับ JButton ที่เปิดหน้าต่างอื่น: Shop / Fishdex / Help
         if (s == shopBtn) pausedDialog(() -> new ShopDialog(this, game).setVisible(true));
         else if (s == dexBtn) pausedDialog(() -> new FishdexDialog(this, game).setVisible(true));
         else if (s == helpBtn) pausedDialog(() -> new HelpDialog(this).setVisible(true));
@@ -334,6 +344,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
 
     /** Bait combo box: switch bait (only baits you own). */
     // [PRESENT] EVENT ItemListener (JComboBox): choose the bait to use
+    // ไทย: event ItemListener (JComboBox): เลือกเหยื่อที่จะใช้
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (updatingBait || e.getStateChange() != ItemEvent.SELECTED) return;
@@ -346,6 +357,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
 
     /** SPACE: cast (press, press again) / strike / reel. Up arrow: pull the hook up. B: bait. R: pull line out. P: pause. */
     // [PRESENT] EVENT KeyListener: SPACE cast+reel, UP pull hook up, DOWN slow swing, B bait, R, P pause, F1 help
+    // ไทย: event KeyListener (กดปุ่ม): SPACE โยน+ม้วน, UP ดึงเบ็ดขึ้น, DOWN หน่วงการแกว่ง, B เหยื่อ, P หยุดเกม, F1 วิธีเล่น
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();
@@ -382,6 +394,7 @@ public class GameFrame extends JFrame implements ActionListener, KeyListener, It
     }
 
     // [PRESENT] EVENT KeyListener (release): stop reeling / pulling / braking
+    // ไทย: event KeyListener (ปล่อยปุ่ม): หยุดม้วน / หยุดดึง / หยุดหน่วง
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {

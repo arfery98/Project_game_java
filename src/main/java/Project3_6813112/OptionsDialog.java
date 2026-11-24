@@ -23,8 +23,11 @@ import javax.swing.event.ChangeListener;
 /** Options: sound, camera and gameplay settings. Every change is applied at once to GameOptions. */
 public class OptionsDialog extends JDialog implements ActionListener, ChangeListener {
 
+    // [PRESENT] REQUIRED COMPONENT JCheckBox x5: sound, fish finder, easy reeling, rain, day/night
+    // ไทย: component บังคับ JCheckBox 5 ตัว: เสียง, fish finder, reel ง่าย, ฝน, กลางวันกลางคืน
     private final JCheckBox soundBox = new JCheckBox("Sound effects");
     // [PRESENT] EXTRA COMPONENT JSlider: sound volume
+    // ไทย: extra component JSlider: ปรับระดับเสียง
     private final JSlider volumeSlider = new JSlider(0, 100, 60);
     private final JLabel volumeLabel = new JLabel();
     private final JCheckBox finderBox = new JCheckBox("Fish finder - show names when you hover (off = surprise)");
@@ -117,6 +120,7 @@ public class OptionsDialog extends JDialog implements ActionListener, ChangeList
     }
 
     // [PRESENT] EVENT ActionListener: the 5 JCheckBox options, Reset, Done
+    // ไทย: event ActionListener: ตัวเลือก JCheckBox 5 ตัว, ปุ่ม Reset, ปุ่ม Done
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == doneButton) {
@@ -132,6 +136,7 @@ public class OptionsDialog extends JDialog implements ActionListener, ChangeList
 
     /** Volume slider: update the label at once and play a test beep when the slider is released. */
     // [PRESENT] EVENT ChangeListener (JSlider): volume changes while dragging
+    // ไทย: event ChangeListener (JSlider): ระดับเสียงเปลี่ยนขณะลาก
     @Override
     public void stateChanged(ChangeEvent e) {
         if (loading) return;

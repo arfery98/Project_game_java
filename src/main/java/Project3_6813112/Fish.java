@@ -104,6 +104,8 @@ public class Fish {
     int eaten;                       // bites taken out of this fish while it was being reeled in
     public int getEaten() { return eaten; }
 
+    // [PRESENT] RULE PRICE: size x species price, reduced by how many times a hunter bit it
+    // ไทย: กฎราคา: ราคาพื้นฐานของชนิดปลา คูณตามขนาดตัว คูณสัดส่วนที่เหลือหลังโดนนักล่ากัด
     public int value() {
         double t = (double) (sizeCm - species.getMinCm()) / Math.max(1, species.getMaxCm() - species.getMinCm());
         return (int) Math.round(species.getBaseValue() * (0.6 + 0.8 * t) * VALUE_LEFT[Math.min(3, eaten)]);

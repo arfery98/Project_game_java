@@ -5,6 +5,7 @@ package Project3_6813112;
 
 /** Background thread that keeps new fish swimming into the lake. */
 // [PRESENT] THREAD 2 fish-spawner: every 0.8 s calls LakeGame.spawnTick()
+// ไทย: thread ที่ 2 fish-spawner: ทุก 0.8 วินาทีเรียก LakeGame.spawnTick() เพื่อสร้างปลา
 public class FishSpawner extends Thread {
 
     private final LakeGame game;
@@ -23,6 +24,8 @@ public class FishSpawner extends Thread {
         while (running && !game.isOver()) {
             try {
                 Thread.sleep(800);
+            // [PRESENT] EXCEPTION: interrupted while sleeping = the thread stops cleanly
+            // ไทย: จัดการ exception: ถูกขัดจังหวะตอนหลับ = thread หยุดทำงานอย่างเรียบร้อย
             } catch (InterruptedException e) {
                 return;
             }

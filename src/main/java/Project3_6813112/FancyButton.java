@@ -19,6 +19,8 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 
 /** Chunky rounded button painted by hand: lighter on hover, pushed down when pressed. */
+// [PRESENT] OOP INHERITANCE: custom JButton drawn with Java2D
+// ไทย: OOP inheritance: ปุ่ม JButton แบบกำหนดเอง วาดด้วย Java2D
 public class FancyButton extends JButton {
 
     public enum Style {

@@ -4,6 +4,8 @@
 package Project3_6813112;
 
 /** Anything sold in the tackle shop (baits, rods, reels). */
+// [PRESENT] OOP INTERFACE: Rod, Reel, Bait and Part are enums that implement it (polymorphism)
+// ไทย: OOP interface: Rod, Reel, Bait, Part เป็น enum ที่ implement ShopItem (polymorphism)
 public interface ShopItem {
     String getTitle();
     int getPrice();
